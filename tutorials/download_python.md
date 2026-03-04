@@ -67,9 +67,6 @@ Choose the correct installer for your operating system.
 1. Scroll to the **Files** section.
 
 2. You *likely* need to download the 64 bit installation.
-
-![Python](images/files.png)
-
 Note: if you want to check your architecture, open "Windows Powershell" and enter:
 
 ```powershell
@@ -84,6 +81,10 @@ Possible outputs are :
 | `x86`   | 32-bit       |
 | `ARM64` | ARM          |
 
+If you get something *other* than 64-bit architecture, download the corresponding file.
+
+
+![Python](images/files.png)
 
 # 3. Install Python 3.13
 

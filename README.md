@@ -1,6 +1,6 @@
 # National Youth Tech Championship 2026
 
-This repository contains the code and setup tutorials used for the **National Youth Tech Championship 2026** robotics project.
+This repository contains the code and setup tutorials used for the **National Youth Tech Championship 2026** robotics challenge.
 
 The project focuses on using **Python and computer vision** to enable a robot to perform **image recognition tasks**.
 
@@ -37,7 +37,7 @@ This folder contains setup guides to help users prepare their development enviro
 
 Current tutorials include:
 
-* **`download_python/`**
+* **`download_python.md`**
   A guide for installing Python which is required to run the project.
 
 * **`download_vscode.md`**
@@ -50,8 +50,8 @@ Current tutorials include:
 To run the code in this repository, you will need:
 
 * Python 3.13.12 (recommended)
-* Jupyter Notebook extension
-* Visual Studio Code (recommended)
+* Jupyter Notebook standalone, or
+* Visual Studio Code with Jupyter notebook extension (recommended)
 
 Additional Python libraries may be required depending on the script or notebook being used, and are listed in "requirements.txt"
 

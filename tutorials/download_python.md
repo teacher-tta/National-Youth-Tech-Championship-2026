@@ -90,7 +90,7 @@ If you get something *other* than 64-bit architecture, download the correspondin
 
 Run the installer, which is likely located in your Downloads folder.
 
-When you run it, be sure to click "Use admin privleges when installing py.exe" and "Add python.exe to PATH".
+‼️**When you run it, be sure to click "Use admin privileges when installing py.exe" and "Add python.exe to PATH".**
 
 ![Python](images/installation1.png)
 

@@ -78,3 +78,9 @@ in your respective terminal (Terminal on Mac, Powershell on Windows).
 ## Notes
 
 Some scripts may require a connected UGOT robot to function properly.
+
+The links to the relevant documentation of some packages we will use are below:
+- [UGOT](https://docs.ubtrobot.com/ugot/#/en-us/extension/python_sdk/version)
+- [face_recognition](https://github.com/ageitgey/face_recognition)
+- [opencv-python](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+- [ultralytics](https://docs.ultralytics.com/reference/engine/results/#ultralytics.engine.results.Boxes)

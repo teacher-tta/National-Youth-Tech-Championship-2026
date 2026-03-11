@@ -63,16 +63,6 @@ To run the code in this repository, you will need:
 * Jupyter Notebook standalone, or
 * Visual Studio Code with Jupyter notebook extension (recommended)
 
-Additional Python libraries may be required depending on the script or notebook being used, and are listed in "requirements.txt"
-
-To install the requirements, run 
-
-```bash
-pip install -r requirements.txt
-```
-
-in your respective terminal (Terminal on Mac, Powershell on Windows).
-
 ---
 
 ## Getting Started

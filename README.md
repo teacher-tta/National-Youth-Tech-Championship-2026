@@ -6,7 +6,9 @@ The project focuses on using **Python and computer vision** to enable your UGOT 
 
 ---
 
-# Installation Guide
+# Setup Guide
+
+**Note:** You MUST have already downloaded Visual Studio Code (See 'tutorials/download_vscode.md'). Windows computers MUST have also downloaded Python 3.13.12 (See 'tutorials/download_python.md')
 
 Download either "install_WIN.bat" for Windows computers, or "install_MAC.sh" for Mac computers. Double click on the file to run it.
 

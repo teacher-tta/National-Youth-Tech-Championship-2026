@@ -2,9 +2,17 @@
 
 This repository contains the code and setup tutorials used for the **National Youth Tech Championship 2026** robotics challenge.
 
-The project focuses on using **Python and computer vision** to enable a robot to perform **image recognition tasks**.
+The project focuses on using **Python and computer vision** to enable your UGOT to perform **image recognition tasks**.
 
 ---
+
+# Installation Guide
+
+Download either "install_WIN.bat" for Windows computers, or "install_MAC.sh" for Mac computers. Double click on the file to run it.
+
+This will create a folder called "nytc" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside this folder.
+
+Open VS Code, and go to "File" > "Open Folder" > Select your "nytc" folder to start programming!
 
 ## Repository Structure
 
@@ -81,6 +89,5 @@ Some scripts may require a connected UGOT robot to function properly.
 
 The links to the relevant documentation of some packages we will use are below:
 - [UGOT](https://docs.ubtrobot.com/ugot/#/en-us/extension/python_sdk/version)
-- [face_recognition](https://github.com/ageitgey/face_recognition)
 - [opencv-python](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
 - [ultralytics](https://docs.ultralytics.com/reference/engine/results/#ultralytics.engine.results.Boxes)

@@ -1,18 +1,17 @@
 #!/bin/zsh
 set -e
 
-PROJECT_NAME="nytc"
-PROJECT_DIR="$HOME/Desktop/$PROJECT_NAME"
+PROJECT_PARENT="$HOME/Desktop"
+REPO_URL="https://github.com/teacher-tta/National-Youth-Tech-Championship-2026"
+REPO_NAME="National-Youth-Tech-Championship-2026"
 VENV_NAME="venv"
 
 echo "Checking for Homebrew..."
 
-# Install Homebrew if not installed
 if ! command -v brew >/dev/null 2>&1; then
     echo "Homebrew not found. Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-    # Add brew to PATH for Apple Silicon or Intel
     if [[ -d "/opt/homebrew/bin" ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     else
@@ -25,14 +24,23 @@ fi
 echo "Updating Homebrew..."
 brew update
 
-echo "Installing Python 3.13..."
-brew install python@3.13
+echo "Installing dependencies (python + git)..."
+brew install python@3.13 git
 
 PYTHON_BIN=$(brew --prefix python@3.13)/bin/python3.13
 
-echo "Creating project directory..."
-mkdir -p "$PROJECT_DIR"
-cd "$PROJECT_DIR"
+echo "Moving to Desktop..."
+cd "$PROJECT_PARENT"
+
+echo "Cloning repository..."
+if [ ! -d "$REPO_NAME" ]; then
+    git clone "$REPO_URL"
+else
+    echo "Repository already exists, skipping clone."
+fi
+
+echo "Entering repository folder..."
+cd "$REPO_NAME"
 
 echo "Creating requirements.txt..."
 
@@ -59,5 +67,6 @@ python -m pip install -r requirements.txt
 echo "-----------------------------------------------"
 echo ""
 echo "Setup complete!"
-echo "Project created at: $PROJECT_DIR"
+echo "Project located at:"
+echo "$PROJECT_PARENT/$REPO_NAME"
 echo ""

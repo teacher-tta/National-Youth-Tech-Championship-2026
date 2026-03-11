@@ -10,9 +10,9 @@ The project focuses on using **Python and computer vision** to enable your UGOT 
 
 **Note:** You MUST have already downloaded Visual Studio Code (See 'tutorials/download_vscode.md'). Windows computers MUST have also downloaded Python 3.13.12 (See 'tutorials/download_python.md')
 
-Download either "install_WIN.bat" for Windows computers, or "install_MAC.sh" for Mac computers. Double click on the file to run it.
+Download either "install_WIN.bat" for Windows computers, or "install_MAC.sh" for Mac computers. Double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
 
-This will create a folder called "nytc" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside this folder.
+This will create a folder called "nytc" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside the "nytc" folder.
 
 Open VS Code, and go to "File" > "Open Folder" > Select your "nytc" folder to start programming!
 

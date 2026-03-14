@@ -1,3 +1,29 @@
+"""
+!!!This file is not intended to be run on its own! Please refer to the
+'combined_rec.ipynb' to use the pose detection!!!
+
+Pose Detection Utilities for Robot Gesture Control.
+
+This module provides helper functions for detecting poses using a
+YOLOv8 pose estimation model and converting those poses into simple
+gesture-based commands. The detected gestures can be used to control the UGOT.
+
+The system analyzes COCO-format body keypoints (primarily shoulders,
+wrists, and hips) to determine the relative position of the user's hands.
+Based on these positions, gestures are classified into commands such as:
+
+    FORWARD   - both hands raised
+    BACKWARD  - both hands lowered
+    LEFT      - left hand raised
+    RIGHT     - right hand raised
+    PICKUP    - arms spread wide at shoulder height
+    EXIT      - hands close together at shoulder height
+    NONE      - no valid gesture detected
+
+To improve stability, a vertical "deadzone" around the shoulders is used
+to prevent small pose variations from rapidly changing commands.
+"""
+
 from ultralytics import YOLO
 import cv2
 import numpy as np

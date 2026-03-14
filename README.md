@@ -10,7 +10,7 @@ The project focuses on using **Python and computer vision** to enable your UGOT 
 
 **Note:** You MUST have already downloaded Visual Studio Code [(See below)](#how-to-download-and-install-visual-studio-code-windows-and-mac). Windows computers MUST have also downloaded Python 3.13.12 [(See below)](#how-to-download-and-install-python-313-windows-only).
 
-Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or ["install_MAC.sh"](install_MAC.sh) for Mac computers. Double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
+Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or ["install_MAC.sh"](install_MAC.sh) for Mac computers. Once you have downloaded it, double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
 
 This will create a folder called "National-Youth-Tech-Championship-2026" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside the "National-Youth-Tech-Championship-2026" folder.
 

@@ -1,68 +1,82 @@
-import cv2
-import numpy as np
+"""
+4_webcam.py
+
+This program opens the computer's webcam and detects red-colored objects in
+the video feed using contour detection. The frame is converted from BGR to
+HSV color space so red colors can be detected more reliably. A mask isolates
+red regions, and contours are used to find the shapes of these regions.
+Small contours are ignored using a minimum area threshold to reduce noise.
+A bounding rectangle is drawn around valid red objects.
+"""
+
+import cv2  # Import OpenCV library for webcam capture and drawing functions
+import numpy as np  # Import NumPy for numerical operations and array handling
+
 
 def main():
+    # Create a VideoCapture object to access the default webcam (index 0)
     cap = cv2.VideoCapture(0)
 
+    # Check if the webcam opened successfully
     if not cap.isOpened():
         print("Error: Could not open webcam")
         return
 
-    MIN_AREA = 2000  # Minimum contour area in pixels
-
+    # Start a loop to continuously capture frames from the webcam
     while True:
+        # Read a frame from the webcam
+        # ret = True if frame captured successfully
+        # frame = the image frame captured from the webcam
         ret, frame = cap.read()
+
+        # If the frame could not be captured, exit the loop
         if not ret:
             print("Failed to grab frame")
             break
 
-        # Convert from BGR to HSV
+        # Convert the frame from BGR color space to HSV color space
+        # HSV makes it easier to detect specific colors
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-        # Red wraps around the HSV hue range, so we use two ranges
-        lower_red1 = np.array([0, 120, 70])
-        upper_red1 = np.array([10, 255, 255])
+        # Define the lower and upper HSV bounds for detecting red
+        lower_red = np.array([0, 120, 70])
+        upper_red = np.array([10, 255, 255])
 
-        lower_red2 = np.array([170, 120, 70])
-        upper_red2 = np.array([180, 255, 255])
+        # Create a mask that keeps only the red colors within the range
+        mask = cv2.inRange(hsv, lower_red, upper_red)
 
-        mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-        mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-        mask = mask1 | mask2
-
-        # Find contours in the red mask
+        # Find contours in the mask
+        # Contours represent the outlines of detected regions
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        if contours:
-            # Get the largest contour
-            largest_contour = max(contours, key=cv2.contourArea)
+        # Loop through each detected contour
+        for contour in contours:
+            # Calculate the area of the contour
+            area = cv2.contourArea(contour)
 
-            # Only detect it if it meets the minimum area requirement
-            if cv2.contourArea(largest_contour) >= MIN_AREA:
-                x, y, w, h = cv2.boundingRect(largest_contour)
+            # Ignore small contours to reduce noise in detection
+            if area > 500:
+                # Get the bounding rectangle for the contour
+                x, y, w, h = cv2.boundingRect(contour)
 
-                # Draw rectangle around the detected red area
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                # Draw the rectangle around the detected red object
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-                # Draw label
-                cv2.putText(frame, "Red object detected", (x, y - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            else:
-                cv2.putText(frame, "Show something red", (30, 40),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        else:
-            cv2.putText(frame, "Show something red", (30, 40),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # Display the webcam frame with any detected bounding box
+        cv2.imshow("Red Object Detection with Contours", frame)
 
-        cv2.imshow("Webcam Feed", frame)
-        cv2.imshow("Red Mask", mask)
-
-        # Press 'q' to quit
+        # Wait 1 ms for a key press
+        # If the 'q' key is pressed, exit the loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+    # Release the webcam when the program ends
     cap.release()
+
+    # Close all OpenCV windows
     cv2.destroyAllWindows()
 
+
+# Run the main function only if this script is executed directly
 if __name__ == "__main__":
     main()

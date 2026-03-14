@@ -96,11 +96,7 @@ Mac users can simply use the ["install_MAC.sh"](install_MAC.sh) file provided.
 
 ## 1. Go to the Official Python Website
 
-Open your browser and visit:
-
-https://www.python.org/downloads/
-
-Python automatically suggests the latest version, but you can download **Python 3.13.12** specifically from:
+Open your browser and visit the official Python website. Python automatically suggests the latest version, but you can download **Python 3.13.12** specifically from:
 
 https://www.python.org/downloads/release/python-31312/
 
@@ -139,7 +135,7 @@ Run the installer, which is likely located in your Downloads folder.
 
 ![Python](images/installation1.png)
 
-Click "Install Now" and wait for the installation for finish. 
+Click "Install Now" and wait for the installation to finish. 
 
 ## 4. Verify Installation
 

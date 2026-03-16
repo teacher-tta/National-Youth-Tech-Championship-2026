@@ -19,11 +19,13 @@ This repository contains some sample files, but more **in depth guides** on Open
 
 **Note:** You MUST have already downloaded Visual Studio Code [(click here)](tutorials/VSCODE_DOWNLOAD.md). Windows computers MUST have also already downloaded Python 3.13.12 [(click here)](tutorials/WINDOWS_PYTHON.md). Mac users do not need to download Python manually, as the following tutorial will auto install the correct version of Python for them.
 
-Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or ["install_MAC.sh"](install_MAC.sh) for Mac computers. Once you have downloaded it, double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
+1. Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or ["install_MAC.sh"](install_MAC.sh) for Mac computers. 
 
-This will create a folder called "National-Youth-Tech-Championship-2026" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside the "National-Youth-Tech-Championship-2026" folder.
+2. Once you have downloaded it, double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
 
-Open VS Code, and go to "File" > "Open Folder" > Select your "National-Youth-Tech-Championship-2026" folder to start programming!
+3. This will create a folder called "National-Youth-Tech-Championship-2026" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside the "National-Youth-Tech-Championship-2026" folder.
+
+4. Open VS Code, and go to "File" > "Open Folder" > Select your "National-Youth-Tech-Championship-2026" folder to start programming!
 
 # Notes
 

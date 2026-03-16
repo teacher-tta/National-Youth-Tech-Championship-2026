@@ -17,7 +17,7 @@ This repository contains some sample files, but more **in depth guides** on Open
 
 # Setup Guide
 
-**Note:** You MUST have already downloaded Visual Studio Code [(click here)](tutorials/VSCODE_DOWNLOAD.md). Windows computers MUST have also downloaded Python 3.13.12 [(click here)](tutorials/WINDOWS_PYTHON.md).
+**Note:** You MUST have already downloaded Visual Studio Code [(click here)](tutorials/VSCODE_DOWNLOAD.md). Windows computers MUST have also already downloaded Python 3.13.12 [(click here)](tutorials/WINDOWS_PYTHON.md). Mac users do not need to download Python manually, as the following tutorial will auto install the correct version of Python for them.
 
 Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or ["install_MAC.sh"](install_MAC.sh) for Mac computers. Once you have downloaded it, double click on the file to run it. There WILL be some warnings, since this script is attempting to install the various packages; please ignore them and run the script.
 

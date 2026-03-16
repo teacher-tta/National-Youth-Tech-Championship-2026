@@ -4,6 +4,8 @@ This repository contains the code and setup tutorials used for the **National Yo
 
 The project focuses on using **Python and computer vision** to enable your UGOT to perform **image recognition tasks**.
 
+This repository contains some sample files, but more **in depth guides** on OpenCV and UGOT can be found in [Notes](#notes).
+
 ---
 
 # Setup Guide
@@ -15,8 +17,6 @@ Download either ["install_WIN.bat"](install_WIN.bat) for Windows computers, or [
 This will create a folder called "National-Youth-Tech-Championship-2026" on your desktop, with a requirements.txt file and virtual environment (venv) inside. Place all relevant code inside the "National-Youth-Tech-Championship-2026" folder.
 
 Open VS Code, and go to "File" > "Open Folder" > Select your "National-Youth-Tech-Championship-2026" folder to start programming!
-
-More in depth guides to OpenCV and UGOT can be found in [Notes](#notes).
 
 ## Requirements
 

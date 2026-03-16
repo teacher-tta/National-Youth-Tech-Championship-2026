@@ -16,6 +16,8 @@ This will create a folder called "National-Youth-Tech-Championship-2026" on your
 
 Open VS Code, and go to "File" > "Open Folder" > Select your "National-Youth-Tech-Championship-2026" folder to start programming!
 
+More in depth guides to OpenCV and UGOT can be found in [Notes](#notes).
+
 ## Requirements
 
 To run the code in this repository, you will need:

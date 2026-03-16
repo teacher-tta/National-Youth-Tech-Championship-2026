@@ -13,7 +13,7 @@ This repository contains some sample files, but more **in depth guides** on Open
 1. [Setup Guide](#setup-guide)
 2. [How to Download and Install Visual Studio Code (Windows and Mac)](#how-to-download-and-install-visual-studio-code-windows-and-mac)
 3. [How to Download and Install Python 3.13 (Windows Only)](#how-to-download-and-install-python-313-windows-only)
-4. [Connecting to the UGOT Robot](#connecting-to-the-ugot-robot)
+4. [Connecting to the UGOT Robot](UGOT_CONNECTION.md)
 
 # Setup Guide
 

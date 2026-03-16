@@ -25,14 +25,6 @@ This will create a folder called "National-Youth-Tech-Championship-2026" on your
 
 Open VS Code, and go to "File" > "Open Folder" > Select your "National-Youth-Tech-Championship-2026" folder to start programming!
 
-## Requirements
-
-To run the code in this repository, you will need:
-
-* Python 3.13.12 (recommended)
-* Jupyter Notebook standalone, or
-* Visual Studio Code with Jupyter notebook extension (recommended)
-
 # Notes
 
 Some scripts may require a connected UGOT robot to function properly.

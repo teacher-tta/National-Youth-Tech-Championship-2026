@@ -57,6 +57,7 @@ def main():
 
         # Display the webcam frame with any detected bounding box
         cv2.imshow("Red Object Detection", frame)
+        cv2.imshow("Mask", mask)
 
         # Wait 1 ms for a key press
         # If the 'q' key is pressed, exit the loop

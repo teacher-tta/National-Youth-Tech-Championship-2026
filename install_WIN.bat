@@ -28,37 +28,24 @@ if errorlevel 1 (
 
 echo Python 3.13 detected.
 
-echo Checking for Git...
-where git >nul 2>&1
-if errorlevel 1 (
-    echo.
-    echo Git is required but was not found.
-    echo.
-    echo Please install Git from:
-    echo https://git-scm.com/download/win
-    echo.
-    echo After installing Git, run this script again.
-    echo.
-    pause
-    exit /b 1
-)
-
-echo Git detected.
-
 echo Moving to Desktop...
 cd /d "%PROJECT_PARENT%"
 
-echo Cloning repository...
+echo Downloading repository as ZIP...
 
 if not exist "%REPO_NAME%" (
-    git clone "%REPO_URL%"
+    powershell -Command "Invoke-WebRequest -Uri '%REPO_URL%/archive/refs/heads/main.zip' -OutFile '%REPO_NAME%.zip'"
     if errorlevel 1 (
-        echo Failed to clone repository.
+        echo Failed to download repository.
         pause
         exit /b 1
     )
+    echo Extracting ZIP...
+    powershell -Command "Expand-Archive -Path '%REPO_NAME%.zip' -DestinationPath '.'"
+    ren "%REPO_NAME%-main" "%REPO_NAME%"
+    del "%REPO_NAME%.zip"
 ) else (
-    echo Repository already exists. Skipping clone.
+    echo Repository folder already exists. Skipping download.
 )
 
 echo Entering repository folder...

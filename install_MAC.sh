@@ -24,19 +24,22 @@ fi
 echo "Updating Homebrew..."
 brew update
 
-echo "Installing dependencies (python + git)..."
-brew install python@3.13 git
+echo "Installing dependencies (python)..."
+brew install python@3.13
 
 PYTHON_BIN=$(brew --prefix python@3.13)/bin/python3.13
 
 echo "Moving to Desktop..."
 cd "$PROJECT_PARENT"
 
-echo "Cloning repository..."
+echo "Downloading repository as ZIP..."
 if [ ! -d "$REPO_NAME" ]; then
-    git clone "$REPO_URL"
+    curl -L "$REPO_URL/archive/refs/heads/main.zip" -o "$REPO_NAME.zip"
+    unzip "$REPO_NAME.zip"
+    mv "$REPO_NAME-main" "$REPO_NAME"
+    rm "$REPO_NAME.zip"
 else
-    echo "Repository already exists, skipping clone."
+    echo "Repository folder already exists. Skipping download."
 fi
 
 echo "Entering repository folder..."

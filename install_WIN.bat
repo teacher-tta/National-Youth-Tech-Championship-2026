@@ -6,6 +6,18 @@ set "REPO_URL=https://github.com/teacher-tta/National-Youth-Tech-Championship-20
 set "REPO_NAME=National-Youth-Tech-Championship-2026"
 set "VENV_NAME=venv"
 
+echo Checking internet connection...
+ping -n 1 8.8.8.8 >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo ERROR: No internet connection detected.
+    echo Please check your network connection and run this script again.
+    echo.
+    pause
+    exit /b 1
+)
+echo Internet connection OK.
+
 echo Checking for Python 3.13...
 
 py -3.13 --version >nul 2>&1
@@ -36,7 +48,11 @@ echo Downloading repository as ZIP...
 if not exist "%REPO_NAME%" (
     powershell -Command "Invoke-WebRequest -Uri '%REPO_URL%/archive/refs/heads/main.zip' -OutFile '%REPO_NAME%.zip'"
     if errorlevel 1 (
-        echo Failed to download repository.
+        echo.
+        echo ERROR: Failed to download repository.
+        echo This may be caused by a lost internet connection or the server being unreachable.
+        echo Please check your connection and try again.
+        echo.
         pause
         exit /b 1
     )
@@ -75,9 +91,30 @@ call "%VENV_NAME%\Scripts\activate.bat"
 
 echo Upgrading pip...
 python -m pip install --upgrade pip
+if errorlevel 1 (
+    echo.
+    echo WARNING: Failed to upgrade pip.
+    echo Your internet connection may have been interrupted.
+    echo Please check your connection and run this script again.
+    echo.
+    pause
+    exit /b 1
+)
 
 echo Installing dependencies...
 python -m pip install -r requirements.txt
+if errorlevel 1 (
+    echo.
+    echo ERROR: Failed to install one or more packages.
+    echo This is often caused by a lost internet connection during download.
+    echo.
+    echo Please check your connection and run this script again.
+    echo The virtual environment will be reused, so already-downloaded
+    echo packages will not need to be re-downloaded.
+    echo.
+    pause
+    exit /b 1
+)
 
 echo -----------------------------------------------
 echo.

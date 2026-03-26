@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "PROJECT_PARENT=%USERPROFILE%\Desktop"
+set "PROJECT_PARENT=%~dp0"
 set "REPO_URL=https://github.com/teacher-tta/National-Youth-Tech-Championship-2026"
 set "REPO_NAME=National-Youth-Tech-Championship-2026"
 set "VENV_NAME=venv"
@@ -40,7 +40,7 @@ if errorlevel 1 (
 
 echo Python 3.13 detected.
 
-echo Moving to Desktop...
+echo Moving to script directory...
 cd /d "%PROJECT_PARENT%"
 
 echo Downloading repository as ZIP...
@@ -120,7 +120,7 @@ echo -----------------------------------------------
 echo.
 echo Setup complete!
 echo Project located at:
-echo %PROJECT_PARENT%\%REPO_NAME%
+echo %PROJECT_PARENT%%REPO_NAME%
 echo.
 
 pause

@@ -1,7 +1,7 @@
 #!/bin/zsh
 set -e
 
-PROJECT_PARENT="$HOME/Desktop"
+PROJECT_PARENT="${0:A:h}"
 REPO_URL="https://github.com/teacher-tta/National-Youth-Tech-Championship-2026"
 REPO_NAME="National-Youth-Tech-Championship-2026"
 VENV_NAME="venv"
@@ -60,7 +60,7 @@ brew install python@3.13 || {
 
 PYTHON_BIN=$(brew --prefix python@3.13)/bin/python3.13
 
-echo "Moving to Desktop..."
+echo "Moving to script directory..."
 cd "$PROJECT_PARENT"
 
 echo "Downloading repository as ZIP..."

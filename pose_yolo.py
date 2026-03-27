@@ -46,9 +46,9 @@ COCO_KEYPOINTS = [
 def draw_deadzone_band(
     frame,
     kps,
-    up_margin_factor: float,
-    down_margin_factor: float,
-    min_conf: float = 0.3,
+    up_margin_factor,
+    down_margin_factor,
+    min_conf=0.3,
 ):
     """
     Draw a horizontal 'deadzone' band between the up/down thresholds
@@ -131,7 +131,7 @@ def classify_pose(
     keypoints,
     up_margin_factor=0.25,
     down_margin_factor=0.25,
-    min_conf: float = 0.3,
+    min_conf=0.3,
 ):
     """
     Classify pose into FORWARD / BACKWARD / LEFT / RIGHT / EXIT / PICKUP / NONE.
@@ -251,16 +251,16 @@ def handle_pickup(got):
 
 
 def run_pose_control(
-    forward_speed: int = 30,
-    backward_speed: int = 30,
-    turn_speed: int = 45,
-    camera_index: int = 0,
-    model_path: str = "yolov8n-pose.pt",
-    up_margin_factor: float = 0.1,
-    down_margin_factor: float = 0.1,
-    min_conf: float = 0.3,
-    enable_robot: bool = True,
-    debounce_frames: int = 5,
+    forward_speed=30,
+    backward_speed=30,
+    turn_speed=45,
+    camera_index=0,
+    model_path="yolov8n-pose.pt",
+    up_margin_factor=0.1,
+    down_margin_factor=0.1,
+    min_conf=0.3,
+    enable_robot=True,
+    debounce_frames=5,
     got=None,
 ):
     """
@@ -369,18 +369,18 @@ def run_pose_control(
 
 
 def run_pose_control_inline(
-    robot_ip: str = '192.168.1.217',
-    forward_speed: int = 30,
-    backward_speed: int = 30,
-    turn_speed: int = 45,
-    camera_index: int = 0,
-    model_path: str = "yolov8n-pose.pt",
-    up_margin_factor: float = 0.1,
-    down_margin_factor: float = 0.1,
-    min_conf: float = 0.3,
-    enable_robot: bool = True,
-    debounce_frames: int = 5,
-    max_frames: int | None = None,
+    robot_ip='192.168.1.217',
+    forward_speed=30,
+    backward_speed=30,
+    turn_speed=45,
+    camera_index=0,
+    model_path="yolov8n-pose.pt",
+    up_margin_factor=0.1,
+    down_margin_factor=0.1,
+    min_conf=0.3,
+    enable_robot=True,
+    debounce_frames=5,
+    max_frames=None,
     got=None,
 ):
     if not _HAS_IPYTHON:

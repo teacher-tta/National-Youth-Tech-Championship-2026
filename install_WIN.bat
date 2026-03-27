@@ -74,6 +74,9 @@ echo ugot
 echo opencv-python
 echo ipykernel
 echo ipython
+echo torch
+echo torchvision
+echo ultralytics-thop
 echo ultralytics
 ) > requirements.txt
 

@@ -90,6 +90,9 @@ ugot
 opencv-python
 ipykernel
 ipython
+torch
+torchvision
+ultralytics-thop
 ultralytics
 EOF
 

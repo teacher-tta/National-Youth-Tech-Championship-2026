@@ -18,6 +18,7 @@ On the UGOT's display, navigate to and tap **Settings**.
 Inside Settings, tap **Hotspot** and toggle it **on**.
 
 Make a note of:
+
 - **Hotspot name** — this will be in the format `UGOT_XXXX`
 - **Password** — you'll need this to connect your laptop in Step 5
 
@@ -40,9 +41,7 @@ Exit the Hotspot screen to return to **Settings**, then scroll down and tap **Ab
 
 Inside **About**, locate the robot's IP address. This is typically:
 
-```
-192.168.88.1
-```
+`192.168.88.1`
 
 Make a note of this — you'll use it to communicate with the robot from your laptop.
 
@@ -64,7 +63,7 @@ On your laptop, open your Wi-Fi settings and connect to the hotspot you noted in
 
 ---
 
-## You're Connected!
+## You're Connected
 
 Once your laptop joins the `UGOT_XXXX` network, you can communicate with the robot using the IP address found in Step 4 (e.g. `192.168.88.1`).
 

@@ -7,7 +7,7 @@ Visual Studio Code (VS Code) is a free, lightweight code editor developed by Mic
 1. Open your web browser.
 2. Visit the official Visual Studio Code website:
 
-   https://code.visualstudio.com/
+   <https://code.visualstudio.com/>
 
 ## 2. Download Visual Studio Code
 

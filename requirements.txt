@@ -1,0 +1,8 @@
+ipython==9.11.0
+numpy==2.4.3
+opencv-python==4.13.0.92
+ugot==0.2.13
+ultralytics==8.4.24
+torch==2.11.0
+torchvision==0.26.0
+ultralytics-thop==2.0.18

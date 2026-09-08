@@ -8,8 +8,12 @@ from ugot import ugot
 # Config
 # ---------------------------------------------------------------------------
 
-ROBOT_IP = "192.168.100.245"
-SHOW_DEBUG = True 
+ROBOT_IP = "192.168.100.179"
+SHOW_DEBUG = True
+DRY_RUN = True  # True = run vision + show windows, but send NO movement
+# commands to the robot (no turn/stop/nudge calls). Useful for tuning
+# Config's detection parameters against the debug windows without the
+# robot actually driving.
 
 DIR_LEFT = 2
 DIR_RIGHT = 3
@@ -34,6 +38,21 @@ class Config:
     max_steering: float = 70  # hard ceiling on |steering| sent to hardware,
     # applied after smoothing/rate-limiting (rate-limiting alone doesn't cap
     # the value it converges to)
+
+    # Line detection (multi-strip scan)
+    line_threshold: int = 100  # grayscale cutoff (0-255); pixels darker than
+    # this are treated as "line". Most likely value to need retuning if the
+    # floor color, line color, or lighting changes -- watch the "Mask" debug
+    # window and adjust until only the line shows up white.
+    num_strips: int = 3  # number of horizontal scan strips within the scan
+    # zone; more strips = smoother curvature estimate but noisier per-strip
+    # centroids
+    scan_height_frac: float = 0.4  # fraction of frame height (from the
+    # bottom) that the scan zone covers
+    scan_width_frac: float = 0.75  # fraction of frame width the scan zone
+    # covers, centered horizontally
+    min_blob_area: int = 80  # min blob area (px) within a strip to count as
+    # a line detection; filters out small noise/specks
 
     # Lost-line handling
     lost_line_threshold: int = 5  # frames with no line before triggering search
@@ -130,7 +149,13 @@ def find_centroid_in_strip(mask_strip, min_area=80):
 
 
 def get_line_position_multistrip(
-    frame, blurred, threshold=100, num_strips=3, scan_height_frac=0.4, scan_width_frac=0.75
+    frame,
+    blurred,
+    threshold=100,
+    num_strips=3,
+    scan_height_frac=0.4,
+    scan_width_frac=0.75,
+    min_blob_area=80,
 ):
     height, width = frame.shape[:2]
 
@@ -170,7 +195,7 @@ def get_line_position_multistrip(
         strip_top = max(strip_top, scan_top)
 
         strip_mask = mask[strip_top:strip_bottom, :]
-        centroid = find_centroid_in_strip(strip_mask)
+        centroid = find_centroid_in_strip(strip_mask, min_area=min_blob_area)
 
         cv2.rectangle(overlay, (0, strip_top), (width, strip_bottom), (255, 0, 0), 1)
 
@@ -261,7 +286,7 @@ def connect_robot(ip=ROBOT_IP):
     return got
 
 
-def follow_line(got, cfg=None):
+def follow_line(got, cfg=None, dry_run=False):
     """
     Run the PD line-following loop on an already-connected `got` object.
 
@@ -276,7 +301,18 @@ def follow_line(got, cfg=None):
         is True -- see the note near the bottom of this function), or
       - a camera frame fails to grab.
     The robot is stopped (got.mecanum_stop()) before returning in every
-    case above, then control passes back to the caller.
+    case above, then control passes back to the caller -- UNLESS dry_run
+    is True, in which case no stop/turn/nudge calls are ever sent (see
+    below).
+
+    dry_run: if True, all vision processing and debug windows behave
+    exactly as normal, but every call that would move the robot (turn(),
+    stop(), the post-marker nudge) is skipped and replaced with a print of
+    what *would* have been sent. Use this to tune Config's detection
+    parameters against the debug windows -- get_line_position_multistrip's
+    threshold/num_strips/scan_*_frac, detect_stop_color's
+    stop_color_* fields -- without the robot actually driving. `got` is
+    still required (still used for got.read_camera_data()).
     """
     if cfg is None:
         cfg = Config()
@@ -299,7 +335,15 @@ def follow_line(got, cfg=None):
 
         blurred = preprocess_frame(data)
 
-        results, mask, overlay = get_line_position_multistrip(data, blurred)
+        results, mask, overlay = get_line_position_multistrip(
+            data,
+            blurred,
+            threshold=cfg.line_threshold,
+            num_strips=cfg.num_strips,
+            scan_height_frac=cfg.scan_height_frac,
+            scan_width_frac=cfg.scan_width_frac,
+            min_blob_area=cfg.min_blob_area,
+        )
 
         marker_found, marker_bbox, marker_mask = detect_stop_color(
             data,
@@ -317,9 +361,12 @@ def follow_line(got, cfg=None):
                 f"(~{fill_frac * 100:.1f}% of frame) -- stopping."
             )
             cv2.rectangle(overlay, (x, y), (x + w, y + h), (0, 0, 255), 3)
-            stop(got)
-            got.transform_move_speed_times(0, 20, 20, 1)
-            stop(got)  # make sure the nudge above doesn't leave us drifting
+            if dry_run:
+                print("[dry_run] would stop + nudge for marker (no movement sent)")
+            else:
+                stop(got)
+                got.transform_move_speed_times(0, 20, 20, 1)
+                stop(got)  # make sure the nudge above doesn't leave us drifting
             if SHOW_DEBUG:
                 cv2.imshow("Webcam Feed", overlay)
                 cv2.imshow("Mask", marker_mask)
@@ -381,13 +428,22 @@ def follow_line(got, cfg=None):
             # Single continuous motion command per frame (turn() carries both
             # forward speed and steering, so a separate move_forward() call
             # is unnecessary and was causing conflicting commands each frame).
-            turn(got, smoothed_steering, smoothed_speed)
+            if dry_run:
+                print(
+                    f"[dry_run] would turn: steering={smoothed_steering:.1f}, "
+                    f"forward_speed={smoothed_speed:.1f}"
+                )
+            else:
+                turn(got, smoothed_steering, smoothed_speed)
         else:
             lost_line_count += 1
             print(f"Line not found in any strip ({lost_line_count} frames)")
 
             if lost_line_count >= cfg.lost_line_threshold:
-                stop(got)
+                if dry_run:
+                    print("[dry_run] would stop (line lost)")
+                else:
+                    stop(got)
                 search_for_line()
                 smoothed_steering = 0.0
                 smoothed_speed = float(cfg.max_speed)
@@ -397,7 +453,10 @@ def follow_line(got, cfg=None):
             cv2.imshow("Mask", mask)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
-                stop(got)
+                if dry_run:
+                    print("[dry_run] 'q' pressed, exiting (no stop sent)")
+                else:
+                    stop(got)
                 break
 
     if SHOW_DEBUG:
@@ -406,7 +465,7 @@ def follow_line(got, cfg=None):
 
 def main():
     got = connect_robot()
-    follow_line(got)
+    follow_line(got, dry_run=DRY_RUN)
 
 
 if __name__ == "__main__":

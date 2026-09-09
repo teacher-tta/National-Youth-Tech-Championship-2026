@@ -94,6 +94,15 @@ def main():
         "--robot-ip", default=None,
         help="IP address of the UGOT robot. If omitted, uses DEFAULT_ROBOT_IP in robot_control.py",
     )
+    parser.add_argument(
+        "--warmup-frames", type=int, default=30,
+        help=(
+            "Number of frames to run the camera/preview before robot "
+            "triggering turns on (default: 30, roughly 1 second at 30fps). "
+            "Lets you confirm the window and camera look right before any "
+            "robot actions can fire."
+        ),
+    )
     args = parser.parse_args()
 
     with open(args.classes) as f:
@@ -127,15 +136,19 @@ def main():
             connect()  # uses DEFAULT_ROBOT_IP from robot_control.py
 
         last_triggered = {name: None for name in REGION_NAMES}
+        frame_count = 0
 
         cap = cv2.VideoCapture(args.camera)
         if not cap.isOpened():
             raise SystemExit(f"Could not open camera index {args.camera}")
         print("Press 'q' to quit.")
+        if args.warmup_frames > 0:
+            print(f"Warming up for {args.warmup_frames} frames -- robot actions are disabled until then.")
         while True:
             ok, frame = cap.read()
             if not ok:
                 break
+            frame_count += 1
 
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = predict_regions(model, device, class_names, frame_rgb, args.crop_size)
@@ -165,13 +178,20 @@ def main():
             # handle_detection() blocks until the robot is done, which pauses
             # this loop (and therefore the preview window) until it returns --
             # control comes back here automatically once the function exits.
-            for name, label, confidence, _box in results:
-                if label == args.none_class:
-                    last_triggered[name] = None
-                    continue
-                if last_triggered[name] != label:
-                    handle_detection(name, label, confidence)
-                    last_triggered[name] = label
+            #
+            # During the warm-up window, skip triggering entirely so you can
+            # confirm the camera/preview look right before any robot action
+            # can fire.
+            if frame_count == args.warmup_frames:
+                print("Warm-up complete -- robot actions are now active.")
+            if frame_count >= args.warmup_frames:
+                for name, label, confidence, _box in results:
+                    if label == args.none_class:
+                        last_triggered[name] = None
+                        continue
+                    if last_triggered[name] != label:
+                        handle_detection(name, label, confidence)
+                        last_triggered[name] = label
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break

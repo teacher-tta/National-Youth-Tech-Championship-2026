@@ -16,7 +16,8 @@ import torch
 from PIL import Image
 from torchvision import transforms
 
-from regions import three_square_regions
+from regions import REGION_NAMES, three_square_regions
+from robot_control import connect, handle_detection
 
 IMAGE_SIZE = 224
 
@@ -82,10 +83,28 @@ def main():
             "matching capture_images.py (default 400)"
         ),
     )
+    parser.add_argument(
+        "--none-class", default="none",
+        help=(
+            "Class name treated as 'nothing recognized'. A zone predicting "
+            "this class never triggers the robot (default: none)"
+        ),
+    )
+    parser.add_argument(
+        "--robot-ip", default=None,
+        help="IP address of the UGOT robot. If omitted, uses DEFAULT_ROBOT_IP in robot_control.py",
+    )
     args = parser.parse_args()
 
     with open(args.classes) as f:
         class_names = json.load(f)
+
+    if args.none_class not in class_names:
+        print(
+            f"Warning: --none-class '{args.none_class}' is not one of the "
+            f"trained classes {class_names} -- every detection will be "
+            "treated as non-none and will trigger the robot."
+        )
 
     device = get_device()
     print(f"Using device: {device}")
@@ -102,6 +121,13 @@ def main():
         return
 
     if args.webcam:
+        if args.robot_ip:
+            connect(args.robot_ip)
+        else:
+            connect()  # uses DEFAULT_ROBOT_IP from robot_control.py
+
+        last_triggered = {name: None for name in REGION_NAMES}
+
         cap = cv2.VideoCapture(args.camera)
         if not cap.isOpened():
             raise SystemExit(f"Could not open camera index {args.camera}")
@@ -129,6 +155,23 @@ def main():
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 255), 2,
             )
             cv2.imshow("Live classification - press q to quit", display)
+
+            # Hand off to the robot for any zone whose detection just changed to
+            # something other than "none". Triggering only on a *change* (rather
+            # than every frame) means an object sitting in view doesn't re-fire
+            # the same action dozens of times a second -- it fires once, then
+            # again only if the zone's prediction changes to something else.
+            #
+            # handle_detection() blocks until the robot is done, which pauses
+            # this loop (and therefore the preview window) until it returns --
+            # control comes back here automatically once the function exits.
+            for name, label, confidence, _box in results:
+                if label == args.none_class:
+                    last_triggered[name] = None
+                    continue
+                if last_triggered[name] != label:
+                    handle_detection(name, label, confidence)
+                    last_triggered[name] = label
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
